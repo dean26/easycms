@@ -14,6 +14,10 @@
             $this->_medoo = $ins->get('medoo');
         }
 
+        public function getTableName(){
+            return $this->db_name;
+        }
+
         public function isError()
         {
             $error = $this->_medoo->error();
@@ -94,10 +98,12 @@
                 $this->created_at = date('Y-m-d H:i:s');
                 $this->updated_at = date('Y-m-d H:i:s');
                 $last_user_id = $this->_medoo->insert($this->db_name, $this->data);
+
                 $this->id = $last_user_id;
             }
 
         }
+
 
         private function delete($warunki){
 
@@ -117,6 +123,7 @@
             foreach($data as $k => $v){
                 $obj->$k = $v;
             }
+
 
             return $obj;
 

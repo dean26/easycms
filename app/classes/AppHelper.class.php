@@ -4,19 +4,28 @@
     class AppHelper{
 
         public static $public_patch;
+        public static $_medoo;
+        public static $_blade;
 
         public static function Config(){
-
             $config = array();
-            $config['displayErrorDetails'] = true;
-            $config['addContentLengthHeader'] = false;
-            $config['database_name'] = "slim";
-            $config['server'] = "localhost";
-            $config['username'] = "root";
-            $config['password'] = "root";
-            $config['prefix'] = "slim_";
-
             return $config;
+        }
+
+        public static function setMedooIns($ins){
+            self::$_medoo = $ins;
+        }
+
+        public static function getMedooIns(){
+            return self::$_medoo;
+        }
+
+        public static function setBladeIns($ins){
+            self::$_blade = $ins;
+        }
+
+        public static function getBladeIns(){
+            return self::$_blade;
         }
 
         public static function BaseUrl($with_file_name = false){
@@ -51,8 +60,8 @@
             $_SESSION[$name] = $value;
         }
 
-        public static function getSesVar($name){
-            return $_SESSION[$name];
+        public static function getSesVar($name, $default = null){
+            return isset($_SESSION[$name]) ? $_SESSION[$name] : $default;
         }
 
         public static function setFlash($var, $val){
@@ -165,6 +174,18 @@
 
             return $html;
 
+        }
+
+        public static function skrdane($tekst, $ilosc_znakow) {
+
+            if (strlen($tekst) > $ilosc_znakow) {
+                $tekst = substr($tekst, 0, $ilosc_znakow);
+                $tekst = substr($tekst, 0, strrpos($tekst, ' '));
+                $tekst .= ' ...';
+
+                return $tekst;
+            }
+            else return $tekst;
         }
 
         public static function passwordGenerator($length) {

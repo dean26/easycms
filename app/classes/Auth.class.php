@@ -2,8 +2,6 @@
 class Auth
 {
     /**
-     * Example middleware invokable class
-     *
      * @param  \Psr\Http\Message\ServerRequestInterface $request  PSR7 request
      * @param  \Psr\Http\Message\ResponseInterface      $response PSR7 response
      * @param  callable                                 $next     Next middleware
@@ -12,6 +10,7 @@ class Auth
      */
 
     public static $logged_admin = null;
+    public static $cms_configs = null;
 
     protected $slim;
     //Constructor
@@ -22,6 +21,14 @@ class Auth
     public function __invoke($request, $response, $next)
     {
         //tutaj sprawdzam czy admin zalogowany
+        $data = $this->slim->medoo->select("opcje", "*");
+        $config = [];
+
+        foreach($data as $k => $v){
+            $config[$v["nazwa"]] = $v["wartosc"];
+        }
+
+        self::$cms_configs = $config;
 
         if(AppHelper::getSesVar('zalogowany') == 1){
             //jesli tak to wykonuje dalej strone
@@ -47,6 +54,10 @@ class Auth
 
     public static function getAdmin(){
         return self::$logged_admin;
+    }
+
+    public static function getConfig($key){
+        return (self::$cms_configs[$key])? self::$cms_configs[$key] : null;
     }
 
     public static function login($id){

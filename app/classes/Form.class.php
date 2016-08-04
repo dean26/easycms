@@ -133,6 +133,35 @@
             return $html;
         }
 
+        public static function select2($name, $selected, $values = array(), $attr_array = array()){
+
+            $attr_text = "";
+            if(!isset($attr_array['class'])) $attr_array['class'] = 'form-control1';
+            if(!isset($attr_array['id'])) $attr_array['id'] = $name;
+
+            if($attr_array){
+                foreach($attr_array as $k => $v){
+                    $attr_text .= " {$k}=\"{$v}\" ";
+                }
+            }
+
+            $html = "<select name=\"{$name}\" {$attr_text}>";
+            if($values){
+                foreach($values as $main_k => $main_v){
+                    $html .= "<optgroup label=\"{$main_k}\">";
+                        foreach($main_v as $k => $v){
+                            $html .= "<option value=\"{$k}\"";
+                            if($k == $selected) $html .= " selected=\"selected\" ";
+                            $html .= ">{$v}</option>";
+                        }
+                    $html .= "</optgroup>";
+                }
+            }
+            $html .= "</select>";
+
+            return $html;
+        }
+
         public static function textarea($name, $value, $attr_array = array()){
 
             $attr_text = "";

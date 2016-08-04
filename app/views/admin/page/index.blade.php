@@ -68,6 +68,9 @@
                         <td>
                             <a href="<?php echo AppHelper::UrlTo('/page/delete_many?obj[]='.$rec->id)?>" type="button" class="btn btn-xs btn-success" onclick="return confirm('Na pewno?')">Usuń</a>
                             <a href="<?php echo AppHelper::UrlTo('/page/edit?id='.$rec->id)?>" type="button" class="btn btn-xs warning_33 btn-warning">Edytuj</a>
+                            <a class="btn btn-info warning_11" href="<?php echo AppHelper::UrlTo('/foto?ref=page&ref_id='.$rec->id)?>">
+                                <i class="lnr lnr-picture"></i><span>&nbsp;Zdjęcia</span>
+                            </a>
                         </td>
                     </tr>
                     @endforeach

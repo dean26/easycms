@@ -64,6 +64,13 @@ class AdminNewsController extends Controller
             $orm = $this->slim->Model->getObj('News');
             $warunki = [];
             $warunki = [ "id" => $ids];
+
+            //najpierw usuwamy miniaturki
+            $lista = $orm->select("*", $warunki);
+            foreach($lista as $l){
+                @unlink(AppHelper::PublicPatch()."/public/uploads/news/".$l->plik);
+            }
+
             $orm->delete($warunki);
         }
 
@@ -93,7 +100,7 @@ class AdminNewsController extends Controller
 
         $object = $this->slim->Model->getObj('News');
 
-        $validated = Validation::is_valid($data, array(
+        $validated = Validation::is_valid(array_merge($data,$req->getUploadedFiles()), array(
             'tytul'    => 'required|max_len,256|min_len,3',
             'meta_title'    => 'max_len,256|min_len,3',
             'meta_decription'       => 'max_len,256|min_len,3',
@@ -219,7 +226,7 @@ class AdminNewsController extends Controller
             }
 
             if(@$data['usun_plik'] == 1){
-                unlink(AppHelper::PublicPatch()."/public/uploads/users/".$object->plik);
+                unlink(AppHelper::PublicPatch()."/public/uploads/news/".$object->plik);
                 $object->plik = null;
             }
 

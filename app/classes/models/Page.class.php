@@ -10,6 +10,10 @@ class Page extends Model {
     {
 
     }
+
+    public function __toString(){
+        return $this->tytul;
+    }
 }
 
 ?>

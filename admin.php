@@ -1,5 +1,5 @@
 <?php
-
+//ini_set('display_errors', 'off');
 session_start();
 session_set_cookie_params(2400);
 
@@ -10,6 +10,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use \Jenssegers\Blade\Blade;
 
 require 'vendor/autoload.php';
+require_once 'config/config.php';
 
 spl_autoload_register(function ($classname) {
     if(file_exists(__DIR__ . "/app/classes/controllers/admin/" . $classname . ".class.php")){
@@ -27,11 +28,10 @@ spl_autoload_register(function ($classname) {
 AppHelper::SetPublicPatch(__DIR__."/");
 
 //tworzenie obiektu
-$app = new \Slim\App(["settings" => AppHelper::Config()]);
+$app = new \Slim\App(["settings" => $config]);
 
 //proste sprawdzenie autoryzacji
 $mw = function ($request, $response, $next) {
-    $response->getBody()->write('BEFORE');
     $response = $next($request, $response);
     return $response;
 };
@@ -44,6 +44,7 @@ $container['view'] = function ($container) {
     $views = AppHelper::PublicPatch() . '/app/views';
     $cache = AppHelper::PublicPatch() . '/app/cache';
     $view = new Blade($views, $cache);
+    AppHelper::setBladeIns($view);
     return $view;
 };
 //logs
@@ -54,16 +55,17 @@ $container['logger'] = function($c) {
     return $logger;
 };
 //zarzadzanie baza danych
-$container['medoo'] = function ($container) {
+$container['medoo'] = function ($container) use($config) {
     $database = new medoo([
         'database_type' => 'mysql',
-        'database_name' => AppHelper::Config()['database_name'],
-        'server' => AppHelper::Config()['server'],
-        'username' => AppHelper::Config()['username'],
-        'password' => AppHelper::Config()['password'],
+        'database_name' => $config['database_name'],
+        'server' => $config['server'],
+        'username' => $config['username'],
+        'password' => $config['password'],
         'charset' => 'utf8',
-        'prefix' => AppHelper::Config()['prefix'],
+        'prefix' => $config['prefix'],
     ]);
+    AppHelper::setMedooIns($database);
     return $database;
 };
 $container['Model'] = function ($container) {
@@ -119,5 +121,6 @@ $app->any('/{controller}[/{action}]', function ($req, $res, $arg) {
 
 $app->run();
 
+AppHelper::setSesVar('prev_page', $_SERVER['REQUEST_URI']);
 
 ?>

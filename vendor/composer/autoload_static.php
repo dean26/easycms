@@ -11,10 +11,16 @@ class ComposerStaticInite79f82cdb1ad4f83fb483d6f8a01c55e
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         'c7359326b6707d98bdc176bf9ddeaebf' => __DIR__ . '/..' . '/catfan/medoo/medoo.php',
     );
 
     public static $prefixLengthsPsr4 = array (
+        'p' => 
+        array (
+            'phpssdb\\' => 8,
+            'phpFastCache\\' => 13,
+        ),
         'S' => 
         array (
             'Symfony\\Component\\Finder\\' => 25,
@@ -25,6 +31,8 @@ class ComposerStaticInite79f82cdb1ad4f83fb483d6f8a01c55e
         'P' => 
         array (
             'Psr\\Http\\Message\\' => 17,
+            'Psr\\Cache\\' => 10,
+            'Predis\\' => 7,
         ),
         'M' => 
         array (
@@ -56,6 +64,14 @@ class ComposerStaticInite79f82cdb1ad4f83fb483d6f8a01c55e
     );
 
     public static $prefixDirsPsr4 = array (
+        'phpssdb\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpfastcache/phpssdb/src/phpssdb',
+        ),
+        'phpFastCache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpfastcache/phpfastcache/src/phpFastCache',
+        ),
         'Symfony\\Component\\Finder\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/finder',
@@ -75,6 +91,14 @@ class ComposerStaticInite79f82cdb1ad4f83fb483d6f8a01c55e
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
+        'Predis\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/predis/predis/src',
         ),
         'Monolog\\' => 
         array (

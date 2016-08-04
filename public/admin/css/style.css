@@ -7600,3 +7600,33 @@ textarea{
 fieldset{
 	margin: 20px 0;
 }
+body.dragging, body.dragging * {
+	cursor: move !important;
+}
+
+.dragged {
+	position: absolute;
+	opacity: 0.5;
+	z-index: 2000;
+}
+#lista_f li{
+	float: left; width: 156px; border: 1px solid silver; padding: 2px; text-align: center;
+	margin: 0 10px 10px 0; overflow: hidden;
+}
+#lista_f li img{
+	max-width: 150px; margin-bottom: 2px;
+}
+#lista_f li.placeholder {
+	position: relative;
+	/** More li styles **/
+}
+#lista_f li.placeholder:before {
+	position: absolute;
+	/** Define arrowhead **/
+}
+.menu_pozycje li{
+	border-bottom: 1px dotted silver; padding: 5px 2px; cursor: grab; margin-bottom: 2px;
+}
+.menu_pozycje li li{
+	border-bottom: 1px dotted #dcdcdc;
+}

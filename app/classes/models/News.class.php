@@ -11,6 +11,10 @@ class News extends Model {
     {
 
     }
+
+    public function __toString(){
+        return $this->tytul;
+    }
 }
 
 ?>

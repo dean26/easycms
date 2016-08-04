@@ -65,6 +65,13 @@ class AdminUserController extends Controller
             $orm = $this->slim->Model->getObj('User');
             $warunki = [];
             $warunki = [ "id" => $ids];
+
+            //najpierw usuwamy miniaturki
+            $lista = $orm->select("*", $warunki);
+            foreach($lista as $l){
+                @unlink(AppHelper::PublicPatch()."/public/uploads/users/".$l->plik);
+            }
+
             $orm->delete($warunki);
         }
 

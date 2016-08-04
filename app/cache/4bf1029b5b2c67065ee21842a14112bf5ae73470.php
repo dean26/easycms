@@ -62,13 +62,16 @@
                                 </label>
                             </div>
                         </th>
-                        <td><b><?php echo e($rec->tytul); ?></b><br/><small><?php echo e($rec->slug); ?></small></td>
+                        <td><b><?php echo e($rec->tytul); ?></b><br/><small>/news/<?php echo e($rec->slug); ?></small></td>
                         <td><?php echo e(News::$status[$rec->status]); ?></td>
                         <td><?php echo e(date('d.m.Y H:i', strtotime($rec->created_at))); ?></td>
                         <td><?php echo e($rec->poziom); ?></td>
                         <td>
                             <a href="<?php echo AppHelper::UrlTo('/news/delete_many?obj[]='.$rec->id)?>" type="button" class="btn btn-xs btn-success" onclick="return confirm('Na pewno?')">Usuń</a>
                             <a href="<?php echo AppHelper::UrlTo('/news/edit?id='.$rec->id)?>" type="button" class="btn btn-xs warning_33 btn-warning">Edytuj</a>
+                            <a class="btn btn-info warning_11" href="<?php echo AppHelper::UrlTo('/foto?ref=news&ref_id='.$rec->id)?>">
+                                <i class="lnr lnr-picture"></i><span>&nbsp;Zdjęcia</span>
+                            </a>
                         </td>
                     </tr>
                     <?php endforeach; ?>

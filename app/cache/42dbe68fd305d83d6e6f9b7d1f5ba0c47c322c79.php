@@ -4,52 +4,79 @@
         <div class="col-md-6">
             <div class="activity_box">
                 <h3>Wiadomości</h3>
-                <div class="scrollbar scrollbar1" id="style-2">
-                    <div class="activity-row">
-                        <div class="col-xs-3 activity-img"><img
+                <div class="editor" id="style-2">
+                    <p class="padding-b-25">Ilość znalezionych wpisów: <b><?php echo e($lista["total"]); ?></b></p>
+                    <?php if(count($lista["wyniki"]) > 0): ?>
+                        <?php foreach($lista["wyniki"] as $rec): ?>
+                            <div class="activity-row">
+                                <div class="col-xs-2 activity-img"><img
                                     src='<?php echo AppHelper::BaseUrl(); ?>public/admin/images/1.png'
                                     class="img-responsive" alt=""/></div>
-                        <div class="col-xs-7 activity-desc">
-                            <h5><a href="#">John Smith</a></h5>
-                            <p>Hey ! There I'm available.</p>
-                        </div>
-                        <div class="col-xs-2 activity-desc1"><h6>13:40 PM</h6></div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="activity-row">
-                        <div class="col-xs-3 activity-img"><img
-                                    src='<?php echo AppHelper::BaseUrl(); ?>public/admin/images/1.png'
-                                    class="img-responsive" alt=""/></div>
-                        <div class="col-xs-7 activity-desc">
-                            <h5><a href="#">Andrew Jos</a></h5>
-                            <p>Hey ! There I'm available.</p>
-                        </div>
-                        <div class="col-xs-2 activity-desc1"><h6>13:40 PM</h6></div>
-                        <div class="clearfix"></div>
-                    </div>
+                                <div class="col-xs-7 activity-desc">
+                                    <h5><a href="#" onclick="return false;"><?php echo e($rec["osoba"]); ?> <small>(ip: <?php echo e($rec["ip"]); ?>)</small></a></h5>
+                                    <p><?php echo e($rec["tresc"]); ?></p>
+                                </div>
+                                <div class="col-xs-3 activity-desc1">
+                                    <h6>Data: <?php echo e(date('d.m.Y H:i', strtotime($rec["created_at"]))); ?></h6>
+                                    <h6>Email: <?php echo e(@$rec['email']); ?></h6>
+                                    <h6 class="padding-b-25">Telefon: <?php echo e(@$rec['telefon']); ?></h6>
+                                    <h2>
+                                        <a title="usuń" href="<?php echo AppHelper::UrlTo('/home/delete_wia?id='.$rec['id'])?>" onclick="return confirm('Na pewno?')">
+                                            <i class="lnr lnr-cross-circle"></i></a>
+                                        <?php if(@$rec['email']): ?>
+                                        <a title="odpisz" href="<?php echo AppHelper::UrlTo('/home/kontakt_form?odbiorca='.$rec['email'])?>">
+                                            <i class="lnr lnr-arrow-right-circle"></i></a>
+                                        <?php endif ?>
+                                    </h2>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        <?php endforeach; ?>
+                        <?php echo $lista["pagination"] ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="switch-right-grid">
                 <div class="switch-right-grid1">
-                    <h3>MONTHLY STATS</h3>
-                    <p></p>
+                    <fieldset>
+                    <legend>Miesięczne statystyki</legend>
+
+                    <?php echo Form::open(AppHelper::UrlTo('/home/index')) ?>
+
+                        <div class="col-md-4">
+                            <label for="miesiac" class="control-label">Miesiąc:</label>
+                            <?php echo Form::select('miesiac', $data['miesiac'], array_combine(range(1,12), range(1,12)) ) ?>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="rok" class="control-label">Rok:</label>
+                            <?php echo Form::select('rok', $data['rok'], array_combine(range(2016, date('Y')), range(2016, date('Y'))) ) ?>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="submit" class="control-label">&nbsp;</label>
+                            <?php echo Form::submit('Pokaż') ?>
+                        </div>
+
+                    <?php echo Form::close() ?>
+                    </fieldset>
+                    <p class="padding-b-25"></p>
                     <canvas id="bar" height="150" width="480" style="width: 480px; height: 150px;"></canvas>
                     <script src="<?php echo AppHelper::BaseUrl(); ?>public/admin/js/Chart.js"></script>
-
+                    <p class="padding-b-25"></p>
+                    <div id="szczegolyStat" style="display: none;"></div>
                     <script>
-                        var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+                        //var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
 
                         var barChartData = {
-                            labels : ["January","February","March","April","May","June","July"],
+                            labels : [<?php echo implode(", ", range(1, $data['ilosc_dni_w_mie'])) ?>],
                             datasets : [
                                 {
                                     fillColor : "rgba(220,220,220,0.5)",
                                     strokeColor : "rgba(220,220,220,0.8)",
                                     highlightFill: "rgba(220,220,220,0.75)",
                                     highlightStroke: "rgba(220,220,220,1)",
-                                    data : [22,55,21,5,78]
+                                    data : [<?php echo implode(",", $lista['staty']) ?>]
                                 }
                             ]
 
@@ -60,15 +87,32 @@
                                 responsive : true
                             });
 
+                            $("#szczegolyStat").show();
+                            $("#szczegolyStat").html('<img src="<?php echo AppHelper::BaseUrl() ?>images/ajax-loader.gif" alt=""/> czekaj...');
+
+                            $.post("<?php echo AppHelper::UrlTo('/home/staty_ajax')?>", { dzien: <?php echo date('d') ?>, rok: <?php echo $data['rok']?>, miesiac: <?php echo $data['miesiac'] ?> },
+                                    function(data) {
+                                        $("#szczegolyStat").html(data);
+                                    });
+
                             $("#bar").click(function(e) {
                                 var activeBars = myChart.getBarsAtEvent(e);
-                                //alert(activeBars[0].label);
+
+                                $("#szczegolyStat").show();
+                                $("#szczegolyStat").html('<img src="<?php echo AppHelper::BaseUrl() ?>public/images/ajax-loader.gif" alt=""/> czekaj...');
+
+                                $.post("<?php echo AppHelper::UrlTo('/home/staty_ajax')?>", { dzien: (activeBars[0].label), rok: <?php echo $data['rok']?>, miesiac: <?php echo $data['miesiac'] ?> },
+                                        function(data) {
+                                            $("#szczegolyStat").html(data);
+                                });
+
                             });
 
                         }
 
 
                     </script>
+                    <p class="padding-b-25"></p>
                 </div>
             </div>
         </div>

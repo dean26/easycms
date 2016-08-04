@@ -151,6 +151,10 @@ class medoo
 		}
 	}
 
+	public function getPrefix(){
+		return $this->prefix;
+	}
+
 	public function query($query)
 	{
 		if ($this->debug_mode)

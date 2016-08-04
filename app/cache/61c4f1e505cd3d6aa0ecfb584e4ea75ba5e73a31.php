@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Panel administracyjny</title>
+    <title>Panel administracyjny | <?php echo e(Auth::getConfig('meta_title')); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -23,8 +23,10 @@
         <div class="left-side-inner">
             <ul class="nav nav-pills nav-stacked custom-nav">
                 <li><a href="<?php echo AppHelper::UrlTo('/') ?>"><i class="lnr lnr-eye"></i><span>Pulpit</span></a></li>
+                <li><a href="<?php echo AppHelper::UrlTo('/menu') ?>"><i class="lnr lnr-menu"></i><span>Menu</span></a></li>
                 <li><a href="<?php echo AppHelper::UrlTo('/page') ?>"><i class="lnr lnr-book"></i><span>Podstrony</span></a></li>
-                <li><a href="<?php echo AppHelper::UrlTo('/news') ?>"><i class="lnr lnr-list"></i><span>Aktualności</span></a></li>
+                <li><a href="<?php echo AppHelper::UrlTo('/news') ?>"><i class="lnr lnr-pushpin"></i><span>Aktualności</span></a></li>
+                <li><a href="<?php echo AppHelper::UrlTo('/galeria') ?>"><i class="lnr lnr-camera"></i><span>Galeria</span></a></li>
                 <li class="menu-list">
                     <a href="#"><i class="lnr lnr-cog"></i>
                         <span>System</span></a>
@@ -32,8 +34,10 @@
                         <?php if(Auth::getAdmin()->typ == 1): ?>
                             <li><a href="<?php echo AppHelper::UrlTo('/user') ?>">Uzytkownicy CMS</a></li>
                         <?php endif; ?>
+                        <li><a href="<?php echo AppHelper::UrlTo('/home/config') ?>">Ustawienia</a></li>
                         <li><a href="<?php echo AppHelper::UrlTo('/home/logi') ?>">Logi</a></li>
                         <li><a href="<?php echo AppHelper::UrlTo('/home/info') ?>">Informacje</a></li>
+                        <li><a href="<?php echo AppHelper::UrlTo('/home/kontakt_form') ?>">Wyślij email</a></li>
                     </ul>
                 </li>
                 <li><a href="<?php echo AppHelper::UrlTo('/home/logout') ?>"><i class="lnr lnr-exit"></i><span>Wyloguj</span></a></li>
@@ -50,30 +54,7 @@
                 <div class="user-panel-top">
                     <div class="profile_details_left">
                         <ul class="nofitications-dropdown">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i><span class="badge">3</span></a>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <div class="notification_header">
-                                            <h3>You have 3 new messages</h3>
-                                        </div>
-                                    </li>
-                                    <li><a href="#">
-                                            <div class="user_img"><img src="<?php echo AppHelper::BaseUrl(); ?>public/admin/images/1.png" alt=""></div>
-                                            <div class="notification_desc">
-                                                <p>Lorem ipsum dolor sit amet</p>
-                                                <p><span>1 hour ago</span></p>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </a></li>
-                                    <li>
-                                        <div class="notification_bottom">
-                                            <a href="#">See all messages</a>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
+                            <?php echo AdminHomeController::getLastWia() ?>
                             <div class="clearfix"></div>
                         </ul>
                     </div>

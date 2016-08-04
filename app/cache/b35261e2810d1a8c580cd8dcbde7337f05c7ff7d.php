@@ -39,11 +39,18 @@
                         <?php echo Form::textarea('tresc', Form::FieldValue('tresc', $object, $data)) ?>
                         <?php echo Form::error('tresc', $errors) ?>
                         <?php echo AppHelper::cke('tresc', '') ?>
-
+<?php echo $object->tresc ?>
 
                         <p class="padding-b-25"></p>
                         <a class="btn btn-warning warning_11" href="#" onclick="sendForm('#edit_form'); return false;">Zapisz</a>
                         <a class="btn btn-success warning_11" href="#" onclick="sendFormZastosuj('#edit_form'); return false;">Zastosuj</a>
+
+                        <?php if($object->id > 0): ?>
+                            <a class="btn btn-info warning_11" href="<?php echo AppHelper::UrlTo('/foto?ref=page&ref_id='.$object->id)?>">
+                                <i class="lnr lnr-picture"></i><span>&nbsp;Zdjęcia</span>
+                            </a>
+                        <?php endif; ?>
+
                     </div>
                 </div>
 
